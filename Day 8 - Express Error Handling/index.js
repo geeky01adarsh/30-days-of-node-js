@@ -17,8 +17,8 @@ app.use((req, res, next) => {
 })
 
 app.get("/positive", (req, res) => {
-    const number = parseInt(req.query.number);
     res.send(`The no. ${number} is positive.`);
+    const number = parseInt(req.query.number);
 })
 
 app.listen(5000, () => {
