@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Collaborative Document Editor</title>
+        <style>
+            /* Add your CSS styles for the document editor here */
+        </style>
+    </head>
+    <body>
+        
+        <textarea name="text" id="textInput" cols="30" rows="10"></textarea>
+        <button onclick="saveData()">Save</button>
+
+        <script>
+            const ws = new WebSocket("ws://localhost:3000/websocket"); // Replace with your WebSocket server URL
+
+            ws.onopen = function (event) {
+                console.log("WebSocket connection opened");
+            };
+
+            const textInput = document.getElementById("textInput");
+
+            textInput.addEventListener("input", (event) => {
+                const content = textInput.innerHTML;
+                ws.send(content); // Send the updated content to the WebSocket server
+            });
+
+            function saveData() {
+                const content = textInput.value;
+                ws.send(content); // Send the content from the textbox to the WebSocket server
+            }
+
+            ws.onmessage = (event) => {
+                // Update the document with the received content from the WebSocket server
+                textInput.innerHTML = event.data;
+            };
+        </script>
+    </body>
+</html>
